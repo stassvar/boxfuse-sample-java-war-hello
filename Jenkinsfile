@@ -15,7 +15,7 @@ pipeline {
       label 'slave'
   }
   stages {
-    stage('Building image') {
+    stage('Building package') {
       steps{
         script {
           sh "mvn package"
@@ -26,8 +26,8 @@ pipeline {
       steps{
         script {        
         withCredentials([usernamePassword(credentialsId: 'deployer', usernameVariable: 'TOMCAT_USER', passwordVariable: 'TOMCAT_PASSWORD')]) {
-        sh """
-          CURL_RESPONSE=\$(curl -v -u $TOMCAT_USER:$TOMCAT_PASSWORD -T target/*.war "http://35.204.214.31:80/manager/text/deploy?path=/helloo&update=true")    
+        sh """/bin/bash
+          CURL_RESPONSE=\$(curl -v -u $TOMCAT_USER:$TOMCAT_PASSWORD -T target/*.war "http://34.66.253.138:80/manager/text/deploy?path=/helloworld&update=true")    
           if [[ \$CURL_RESPONSE == *"FAIL"* ]]; then
             echo "war deployment failed"
             exit 1
